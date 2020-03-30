@@ -11,68 +11,64 @@ class MyApp extends StatefulWidget {
   _State createState() => new _State();
 }
 
-class Item {
-  bool isExpanded;
-  final String header;
-  final Widget body;
+class Choice {
+  final String title;
+  final IconData icon;
 
-  Item(this.isExpanded, this.header, this.body);
+  const Choice({this.title, this.icon});
 }
 
-class _State extends State<MyApp> {
+class _State extends State<MyApp> with SingleTickerProviderStateMixin {
 
-  List<Item> items = new List<Item>();
+  TabController controller;
+  List<Choice> items = const <Choice>[
+    const Choice(title: 'CAR', icon: Icons.directions_car),
+    const Choice(title: 'BICYCLE', icon: Icons.directions_bike),
+    const Choice(title: 'BOAT', icon: Icons.directions_boat),
+    const Choice(title: 'BUS', icon: Icons.directions_bus),
+    const Choice(title: 'TRAIN', icon: Icons.directions_railway),
+    const Choice(title: 'WALK', icon: Icons.directions_walk),
+  ];
 
 
   @override
   void initState() {
-    for(int i = 1; i <= 10; i++) {
-      items.add(new Item(
-        false,
-        'Item $i',
-        new Container(
-          padding: new EdgeInsets.all(10.0),
-          child: new Text('Description of item $i')
-          )
-        )
-      );
-    }
-  }
-
-  ExpansionPanel createItem(Item item) {
-    return new ExpansionPanel(
-      headerBuilder: (BuildContext context, bool isExpanded) {
-        return new Container(
-          padding: EdgeInsets.all(5.0),
-          child: new Text('Header ${item.header}')
-        );
-      },
-      body: item.body,
-      isExpanded: item.isExpanded
-    );
+    controller = new TabController(length: items.length, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Name here'),
-      ),
-      body: new Container(
-        padding: new EdgeInsets.all(32.0),
-        child: new ListView(
-          children: <Widget>[
-            new ExpansionPanelList(
-              expansionCallback: (int index, bool isExpanded) {
-                setState(() {
-                  items[index].isExpanded = !items[index].isExpanded;
-                });
-              },
-              children: items.map(createItem).toList(),
-            )
-          ],
+        title: new Text('Widgets'),
+        bottom: new PreferredSize(
+          preferredSize: const Size.fromHeight(48.0),
+          child: new Theme(
+            data: Theme.of(context).copyWith(accentColor: Colors.white),
+              child: new Container(
+                height: 48.0,
+                alignment: Alignment.center,
+                child: new TabPageSelector(controller: controller),
+          )
+          )
         )
       ),
+      body: new TabBarView(
+        controller: controller,
+        children: items.map((Choice item) {
+          return new Container(
+            padding: new EdgeInsets.all(25.0),
+            child: new Center(
+              child: new Column(
+                children: <Widget>[
+                  new Text(item.title),
+                  new Icon(item.icon, size: 120.0)
+                ]
+              )
+            )
+          );
+        }).toList()
+      )
     );
   }
 }
