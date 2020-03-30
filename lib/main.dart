@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'clock.dart';
+import 'TimeCounter.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -24,8 +24,8 @@ class _State extends State<MyApp> {
         child: new Center(
           child: new Column(
             children: <Widget>[
-              new Text('NOW'),
-              new Clock()
+              new Text('My Stop Watch'),
+              new TimeCounter()
             ]
           ),
         ),
