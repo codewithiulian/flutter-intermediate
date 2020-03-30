@@ -22,27 +22,39 @@ class Sales {
 
 class _State extends State<MyApp> {
 
-  List<Sales> data;
+  List<Sales> laptops;
+  List<Sales> desktops;
   List<charts.Series<Sales, String>> chartdata;
   
   void makeData() {
-    data = new List<Sales>();
-    chartdata = List<charts.Series<Sales, String>>();
-    
-    final rnd = new Random();
-    for(int i = 2010; i< 2019; i++) {
-      data.add(new Sales(i.toString(), rnd.nextInt(1000)));
+    laptops = new List<Sales>();
+    desktops = new List<Sales>();
+    chartdata = new List<charts.Series<Sales, String>>();
+
+    final rdm = new Random();
+    for(int i = 2016; i < 2019; i++) {
+      laptops.add(new Sales(i.toString(), rdm.nextInt(1000)));
+      desktops.add(new Sales(i.toString(), rdm.nextInt(1000)));
     }
 
     chartdata.add(new charts.Series(
       id: 'Sales',
-      colorFn: (_,__) => charts.MaterialPalette.green.shadeDefault,
-      data: data,
+      data: laptops,
       domainFn: (Sales sales, _) => sales.year,
       measureFn: (Sales sales, _) => sales.sales,
-      fillPatternFn: (_,__) => charts.FillPatternType.solid,
-      displayName: 'sales'
-      )
+      displayName: 'Sales',
+      colorFn: (_,__) => charts.MaterialPalette.green.shadeDefault,
+    )
+    );
+
+    chartdata.add(new charts.Series(
+      id: 'Sales',
+      data: desktops,
+      domainFn: (Sales sales, _) => sales.year,
+      measureFn: (Sales sales, _) => sales.sales,
+      displayName: 'Sales',
+      colorFn: (_,__) => charts.MaterialPalette.red.shadeDefault,
+    )
     );
   }
 
@@ -63,7 +75,8 @@ class _State extends State<MyApp> {
           child: new Column(
             children: <Widget>[
               new Text('Sales data'),
-              new Expanded(child: new charts.BarChart(chartdata))
+              new Expanded(
+                child: new charts.BarChart(chartdata, vertical: false,))
             ]
           ),
         ),
