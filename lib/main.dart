@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'mywidget.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -16,14 +17,15 @@ class _State extends State<MyApp> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Name here'),
+        title: new Text('Custom Widgets'),
       ),
       body: new Container(
         padding: new EdgeInsets.all(32.0),
         child: new Center(
           child: new Column(
             children: <Widget>[
-              new Text('Hello World'),
+              new Text('All widgets here'),
+              new MyWidget()
             ]
           ),
         ),
