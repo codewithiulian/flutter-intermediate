@@ -14,48 +14,34 @@ class MyApp extends StatefulWidget {
 }
 
 class Sales {
-  String year;
+  int year;
   int sales;
+  charts.Color color;
 
-  Sales(this.year, this.sales);
+  Sales(this.year, this.sales, this.color);
 }
 
 class _State extends State<MyApp> {
 
-  List<Sales> laptops;
-  List<Sales> desktops;
-  List<charts.Series<Sales, String>> chartdata;
-  
+  List<Sales> data;
+  List<charts.Series<Sales, int>> chartdata;
+
   void makeData() {
-    laptops = new List<Sales>();
-    desktops = new List<Sales>();
-    chartdata = new List<charts.Series<Sales, String>>();
-
-    final rdm = new Random();
-    for(int i = 2016; i < 2019; i++) {
-      laptops.add(new Sales(i.toString(), rdm.nextInt(1000)));
-      desktops.add(new Sales(i.toString(), rdm.nextInt(1000)));
-    }
+    chartdata = new List<charts.Series<Sales, int>>();
+    data = <Sales>[
+      new Sales(0, 100, charts.MaterialPalette.red.shadeDefault),
+      new Sales(1, 75, charts.MaterialPalette.blue.shadeDefault),
+      new Sales(2, 25, charts.MaterialPalette.indigo.shadeDefault),
+      new Sales(3, 5, charts.MaterialPalette.yellow.shadeDefault),
+    ];
 
     chartdata.add(new charts.Series(
       id: 'Sales',
-      data: laptops,
+      data: data,
+      colorFn: (Sales sales, _) => sales.color,
       domainFn: (Sales sales, _) => sales.year,
-      measureFn: (Sales sales, _) => sales.sales,
-      displayName: 'Sales',
-      colorFn: (_,__) => charts.MaterialPalette.green.shadeDefault,
-    )
-    );
-
-    chartdata.add(new charts.Series(
-      id: 'Sales',
-      data: desktops,
-      domainFn: (Sales sales, _) => sales.year,
-      measureFn: (Sales sales, _) => sales.sales,
-      displayName: 'Sales',
-      colorFn: (_,__) => charts.MaterialPalette.red.shadeDefault,
-    )
-    );
+      measureFn: (Sales sales, _) => sales.sales
+    ));
   }
 
   @override
@@ -75,8 +61,11 @@ class _State extends State<MyApp> {
           child: new Column(
             children: <Widget>[
               new Text('Sales data'),
-              new Expanded(
-                child: new charts.BarChart(chartdata, vertical: false,))
+              new Expanded(child: new charts.PieChart(
+                chartdata,
+                animate: true,
+                animationDuration: new Duration(milliseconds: 500),
+              ))
             ]
           ),
         ),
