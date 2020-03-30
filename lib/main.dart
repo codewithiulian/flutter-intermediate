@@ -11,29 +11,51 @@ class MyApp extends StatefulWidget {
   _State createState() => new _State();
 }
 
-class Choice {
-  final String title;
-  final IconData icon;
+class _State extends State<MyApp> {
 
-  const Choice({this.title, this.icon});
-}
-
-class _State extends State<MyApp> with SingleTickerProviderStateMixin {
-
-  TabController controller;
-  List<Choice> items = const <Choice>[
-    const Choice(title: 'CAR', icon: Icons.directions_car),
-    const Choice(title: 'BICYCLE', icon: Icons.directions_bike),
-    const Choice(title: 'BOAT', icon: Icons.directions_boat),
-    const Choice(title: 'BUS', icon: Icons.directions_bus),
-    const Choice(title: 'TRAIN', icon: Icons.directions_railway),
-    const Choice(title: 'WALK', icon: Icons.directions_walk),
-  ];
-
+  List<Step> steps;
+  int current;
 
   @override
   void initState() {
-    controller = new TabController(length: items.length, vsync: this);
+    current = 0;
+    steps = <Step>[
+      new Step(
+          title: new Text('Step 1'),
+          content: new Text('Do something for step 1'),
+          isActive: true
+      ),
+      new Step(
+          title: new Text('Step 2'),
+          content: new Text('Do something for step 2'),
+          isActive: true
+      ),
+      new Step(
+          title: new Text('Step 3'),
+          content: new Text('Do something for step 3'),
+          isActive: true
+      ),
+    ];
+  }
+
+  void stepContinue() {
+    setState(() {
+      current++;
+      if(current >= steps.length) current = steps.length - 1;
+    });
+  }
+
+  void stepCancel(){
+    setState(() {
+      current--;
+      if(current < 0) current = 0;
+    });
+  }
+
+  void stepTap(int index) {
+    setState(() {
+      current = index;
+    });
   }
 
   @override
@@ -41,34 +63,20 @@ class _State extends State<MyApp> with SingleTickerProviderStateMixin {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Widgets'),
-        bottom: new PreferredSize(
-          preferredSize: const Size.fromHeight(48.0),
-          child: new Theme(
-            data: Theme.of(context).copyWith(accentColor: Colors.white),
-              child: new Container(
-                height: 48.0,
-                alignment: Alignment.center,
-                child: new TabPageSelector(controller: controller),
-          )
-          )
-        )
       ),
-      body: new TabBarView(
-        controller: controller,
-        children: items.map((Choice item) {
-          return new Container(
-            padding: new EdgeInsets.all(25.0),
-            child: new Center(
-              child: new Column(
-                children: <Widget>[
-                  new Text(item.title),
-                  new Icon(item.icon, size: 120.0)
-                ]
-              )
-            )
-          );
-        }).toList()
-      )
+      body: new Container(
+        padding: new EdgeInsets.all(32.0),
+        child: new Center(
+          child: new Stepper(
+            steps: steps,
+            type: StepperType.vertical,
+            currentStep: current,
+            onStepCancel: stepCancel,
+            onStepContinue: stepContinue,
+            onStepTapped: stepTap,
+          ),
+        ),
+      ),
     );
   }
 }
