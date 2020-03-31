@@ -19,16 +19,20 @@ class _SecondState extends State<Second> {
             children: <Widget>[
               new Text('Second Page'),
               new RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/Third');
-                  },
-                  child: new Text('Next')
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/Third',
+                    (Route<dynamic> route) => false);
+                },
+                child: new Text('Next')
               ),
               new RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/Home');
-                  },
-                  child: new Text('Back')
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/Home',
+                    (Route<dynamic> route) => false);
+                },
+                child: new Text('Back')
               ),
             ]
           ),
