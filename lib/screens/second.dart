@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../mywidget.dart';
 
 class Second extends StatefulWidget {
   @override
@@ -19,18 +20,18 @@ class _SecondState extends State<Second> {
             children: <Widget>[
               new Text('Second Page'),
               new RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/Third',
-                    (Route<dynamic> route) => false
-                  );
-                },
-                child: new Text('Third')
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/Third');
+                  },
+                  child: new Text('Next')
               ),
               new RaisedButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/Home');
+                  },
                   child: new Text('Back')
               ),
+              new MyWidget(),
             ]
           ),
         ),

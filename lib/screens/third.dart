@@ -20,11 +20,7 @@ class _ThirdState extends State<Third> {
                 new Text('Third Page'),
                 new RaisedButton(
                     onPressed: () {
-                      if(Navigator.of(context).canPop()) {
-                        Navigator.of(context).pop();
-                      } else {
-                        Navigator.of(context).pushNamed('/Second');
-                      }
+                      Navigator.of(context).pushNamed('/Second');
                     },
                     child: new Text('Back')
                 ),

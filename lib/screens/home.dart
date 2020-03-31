@@ -22,13 +22,7 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   Navigator.of(context).pushNamed('/Second');
                 },
-                child: new Text('Second')
-              ),
-              new RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/Third');
-                  },
-                  child: new Text('Third')
+                child: new Text('Next')
               ),
             ]
           ),
