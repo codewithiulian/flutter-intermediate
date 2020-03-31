@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'TimeCounter.dart';
+import 'authenticator.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -13,6 +13,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _State extends State<MyApp> {
+
+  bool _isAuthenticated;
+
+  void _onAuthenticated(bool value) {
+    setState(() => _isAuthenticated = value);
+  }
+
+
+  @override
+  void initState() {
+    _isAuthenticated = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -24,8 +37,9 @@ class _State extends State<MyApp> {
         child: new Center(
           child: new Column(
             children: <Widget>[
-              new Text('My Stop Watch'),
-              new TimeCounter()
+              new Text('Please Login'),
+              new Authenticator(onAuthenticated: _onAuthenticated),
+              new Text('Authenticated: $_isAuthenticated'),
             ]
           ),
         ),
