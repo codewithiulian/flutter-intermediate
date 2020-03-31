@@ -22,17 +22,14 @@ class _SecondState extends State<Second> {
                 onPressed: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     '/Third',
-                    (Route<dynamic> route) => false);
+                    (Route<dynamic> route) => false
+                  );
                 },
-                child: new Text('Next')
+                child: new Text('Third')
               ),
               new RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/Home',
-                    (Route<dynamic> route) => false);
-                },
-                child: new Text('Back')
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: new Text('Back')
               ),
             ]
           ),
